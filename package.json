@@ -4,7 +4,8 @@
   "description": "Backend for a smartphone game currator website",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "./node_modules/.bin/netlify-lambda serve server",
+    "build": "./node_modules/.bin/netlify-lambda build server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Juno Nguyen",
