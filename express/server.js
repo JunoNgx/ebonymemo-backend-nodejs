@@ -1,12 +1,13 @@
 const express = require('express')
 const app = express()
+const serverless = require('serverless-http')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-const gameRoutes = require("./api/routes/games")
-const devRoutes = require("./api/routes/devs")
+const gameRoutes = require("../api/routes/games")
+const devRoutes = require("../api/routes/devs")
 
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}${process.env.DB_DBHOST}/${process.env.DB_DBNAME}?retryWrites=true&w=majority`
 // console.log(URI)
@@ -29,8 +30,8 @@ app.use((req, res, next) => {
 })
 
 // Main request handling routes
-app.use('/games', gameRoutes)
-app.use('/devs', devRoutes)
+app.use('/.netlify/functions/server/games', gameRoutes)
+app.use('/.netlify/functions/server/devs', devRoutes)
 
 // Handling requests that make past /games and /devs, which are basically errors
 app.use((req, res, next) => {
@@ -46,4 +47,22 @@ app.use((error, req, res, next) => {
     })
 })
 
+// const router = express.Router();
+// router.get('/', (req, res) => {
+//   // res.writeHead(200, { 'Content-Type': 'text/html' });
+//   res.status(200).json({
+//     message: "this is the main route"
+//   });
+// });
+
+// router.get('/another', (req, res) => {
+//     res.status(200).json({
+//       route: req.originalUrl
+//     })
+//   });
+
+// app.use(bodyParser.json());
+// app.use('/.netlify/functions/server', router)
+
 module.exports = app
+module.exports.handler = serverless(app)

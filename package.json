@@ -1,20 +1,32 @@
 {
-  "name": "ebonymemo-backend-node",
-  "version": "0.0.1",
-  "description": "Backend for a smartphone game currator website",
-  "main": "index.js",
-  "scripts": {
-    "start": "./node_modules/.bin/netlify-lambda serve server",
-    "build": "./node_modules/.bin/netlify-lambda build server",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Juno Nguyen",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "mongoose": "^5.9.20",
-    "morgan": "^1.10.0"
-  }
+    "name": "ebonymemo-backend-node",
+    "version": "0.0.1",
+    "description": "Backend for a smartphone game currator website",
+    "main": "functions/server.js",
+    "scripts": {
+        "build": "netlify-lambda build express",
+        "start": "nodemon server-local",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JunoNgx/ebonymemo-backend-nodejs.git"
+    },
+    "keywords": [
+        "netlify",
+        "express",
+        "nodejs"
+    ],
+    "author": "JunoNgx",
+    "license": "MIT",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "mongoose": "^5.9.20",
+        "morgan": "^1.10.0",
+        "netlify-lambda": "^1.6.3",
+        "nodemon": "^2.0.4",
+        "serverless-http": "^2.5.0"
+    }
 }
