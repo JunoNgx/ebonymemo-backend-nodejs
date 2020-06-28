@@ -47,22 +47,5 @@ app.use((error, req, res, next) => {
     })
 })
 
-// const router = express.Router();
-// router.get('/', (req, res) => {
-//   // res.writeHead(200, { 'Content-Type': 'text/html' });
-//   res.status(200).json({
-//     message: "this is the main route"
-//   });
-// });
-
-// router.get('/another', (req, res) => {
-//     res.status(200).json({
-//       route: req.originalUrl
-//     })
-//   });
-
-// app.use(bodyParser.json());
-// app.use('/.netlify/functions/server', router)
-
 module.exports = app
 module.exports.handler = serverless(app)
