@@ -2,13 +2,13 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require("mongoose")
 
-const Developer = require ('../models/developer')
+// const Developer = require ('../models/developer')
 const Game = require ('../models/game')
 
 router.get('/', (req, res, next) => {
     //Get ALL games
     Game.find({})
-    .select('name releaseYear developer')
+    .select('name releaseYear devId')
     .populate('developer')
     .exec()
     .then(result => {
@@ -28,17 +28,17 @@ router.get('/', (req, res, next) => {
 
 router.get('/:gameId', (req, res, next) => {
     Game.findOne({gameId: req.params.gameId})
-    .select('name releaseYear developer')
+    .select('name releaseYear devId')
     // defined in the Game model's virtual population
     .populate('developer')
     .exec()
     .then(result => {
-        console.log("Found from DB: ", result)
+        // console.log("Found from DB: ", result)
         if (result) {
             res.status(200).json(result)
         } else {
             res.status(404).json({
-                message: "Game not found"
+                message: "Error: gameId not found"
             })
         }
     })
@@ -105,18 +105,20 @@ router.delete('/:gameId', async (req, res, next) => {
             })
     } else {
         res.status(404).json({
-            message: "Error: Game doesn't exist"
+            message: "Error: gameId not found"
         })
     }
 })
 
-router.patch("/:devId", async (req, res, next) => {
+router.patch("/:gameId", async (req, res, next) => {
+
     if (await (Game.exists({gameId: req.params.gameId}))) {
 
         const fieldsToUpdate = {}
-        for (const field in fieldsToUpdate) {
+        for (const field in req.body) {
             if (field === "gameId") {
                 if (await (Game.exists({gameId: req.body.gameId}))) {
+                    // TODO communicate with client about devId not being unique
                     console.log('New gameId already exists. Field not updated.')
                 } else {
                     fieldsToUpdate[field] = req.body[field]
@@ -129,7 +131,7 @@ router.patch("/:devId", async (req, res, next) => {
         Game.updateOne(
             {gameId: req.params.gameId},
             {$set: fieldsToUpdate},
-            {new: true}
+            {new: true})
             .exec()
             .then(result => {
                 res.status(200).json({
@@ -143,7 +145,7 @@ router.patch("/:devId", async (req, res, next) => {
                     error: err
                 })
             })
-        )
+        
     } else {
         res.status(404).json({
             message: "Error: gameId not found"

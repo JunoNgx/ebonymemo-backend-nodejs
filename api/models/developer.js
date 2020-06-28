@@ -7,6 +7,8 @@ const developerSchema = mongoose.Schema({
     personnel: {type: Array, required: false},
     twitter: {type: String, required: false},
     website: {type: String, required: false}
+}, {
+    versionKey: false
 })
 
 module.exports = mongoose.model('Developer', developerSchema)

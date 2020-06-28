@@ -10,6 +10,7 @@ const gameSchema = mongoose.Schema({
         otherReleases: {type: Array, required: false},
         dateAdded: {type: Date}
     }, {
+        versionKey: false,
         // These two lines are important for virtual schema population
         toObject: {virtuals: true},
         toJSON: {virtuals: true}

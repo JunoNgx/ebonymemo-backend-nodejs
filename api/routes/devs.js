@@ -8,10 +8,10 @@ router.get('/:devId', (req, res, next) => {
     Developer.findOne({devId: req.params.devId})
         .select('devId name origin personnel twitter website')
         .exec()
-        .then(data => {
-            if (data) {
-                console.log("Found from DB: ", data)
-                res.status(200).json(data)
+        .then(result => {
+            if (result) {
+                // console.log("Found from DB: ", data)
+                res.status(200).json(result)
             } else {
                 res.status(404).json({
                     message: "Dev not found"
@@ -115,7 +115,6 @@ router.patch("/:devId", async (req, res, next) => {
 
         const fieldsToUpdate = {}
         for (const field in req.body) {
-            // console.log(field, req.body[field])
             if (field === "devId") {
                 if (await Developer.exists({devId: req.body.devId})) {
                     // res.status(500).json({
