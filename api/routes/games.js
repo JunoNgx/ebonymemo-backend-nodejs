@@ -59,7 +59,7 @@ router.post('/', async (req, res, next) => {
                 gameId: req.body.gameId,
                 name: req.body.name,
                 releaseYear: req.body.releaseYear,
-                devId: req.body.releaseYear,
+                devId: req.body.devId,
                 android: req.body.android,
                 ios: req.body.ios,
                 otherReleases: req.body.otherReleases,
