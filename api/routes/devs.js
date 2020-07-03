@@ -4,6 +4,27 @@ const mongoose = require("mongoose")
 
 const Developer = require ('../models/developer')
 
+router.get('/', (req, res, next) => {
+    Developer.find({})
+    .select("devId name origin website twitter peronnel")
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message: 'Dev read ALL successful',
+            amount: result.length,
+            result: result
+        })
+    })
+    .catch(err => {
+        if (err) {
+            res.status(500).json({
+                message: "Error",
+                error: err
+            })
+        }
+    })
+})
+
 router.get('/:devId', (req, res, next) => {
     Developer.findOne({devId: req.params.devId})
         .select('devId name origin personnel twitter website')
