@@ -131,7 +131,7 @@ router.delete("/:devId", async (req, res, next) => {
 })
 
 router.patch("/:devId", async (req, res, next) => {
-
+    console.log(req.body);
     if (await Developer.exists({devId: req.params.devId})) {
 
         const fieldsToUpdate = {}
@@ -179,29 +179,16 @@ router.patch("/:devId", async (req, res, next) => {
         })
     }
 
-    // Developer.findOneAndUpdate({devId: req.params.devId}, {},
-    //     {new: true},
-    //     (err, result) => {
-    //         if (err) {
-    //             res.status(500).json({
-    //                 message: "Error in update",
-    //                 error: err
-    //             })
-    //         } else {
-    //             res.status(200).json({
-    //                 message: "Update successful",
-    //                 result: result
-    //             })
-    //         }
-    //     }
-    // )
 })
 
-// function confirmDevIdExistence(_devId) {
-//     Developer.findOne({devId: _devId}, function(err, result) {
-//         console.log(result)
-//         return result
-//     })
-// }
+async function checkExist(req, res, next) {
+    if (await Developer.exists({devId: req.params.devId})) {
+        next()
+    } else {
+        res.status(500).json({
+            message: "Error: requested dev doesn't exist"
+        })
+    }
+}
 
 module.exports = router

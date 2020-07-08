@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const developerSchema = mongoose.Schema({
-    devId: {type: String, required: true},
+    devId: {type: String, unique: true, required: true},
     name: {type: String, required: true},
     origin: {type: String, required: true},
     personnel: {type: Array, required: false},
