@@ -5,9 +5,10 @@ const gameSchema = mongoose.Schema({
         name: {type: String, required: true},
         releaseYear: {type: Number, required: true},
         devId: {type: String, required: true},
-        android: {type: String, required: false},
         ios: {type: String, required: false},
-        otherReleases: {type: Array, required: false},
+        android: {type: String, required: false},
+        other: {type: Boolean, required: false},
+        description: {type: String, required: false},
         dateAdded: {type: Date}
     }, {
         versionKey: false,
