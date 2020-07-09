@@ -8,7 +8,7 @@ const Game = require ('../models/game')
 router.get('/', (req, res, next) => {
     //Get ALL games
     Game.find({})
-    .select('gameId name releaseYear devId ios android other')
+    .select('gameId name releaseYear devId ios android other dateAdded')
     .populate('developer')
     .exec()
     .then(result => {
@@ -28,7 +28,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:gameId', (req, res, next) => {
     Game.findOne({gameId: req.params.gameId})
-    .select('gameId name releaseYear devId ios android other description')
+    .select('gameId name releaseYear devId ios android other description dateAdded')
     // defined in the Game model's virtual population
     .populate('developer')
     .exec()
