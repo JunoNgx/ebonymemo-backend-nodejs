@@ -28,7 +28,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:gameId', (req, res, next) => {
     Game.findOne({gameId: req.params.gameId})
-    .select('gameId name releaseYear devId ios android otherRelease description')
+    .select('gameId name releaseYear devId ios android other description')
     // defined in the Game model's virtual population
     .populate('developer')
     .exec()
