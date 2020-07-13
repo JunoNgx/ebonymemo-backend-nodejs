@@ -11,7 +11,7 @@ const devRoutes = require("../api/routes/devs")
 
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}${process.env.DB_DBHOST}/${process.env.DB_DBNAME}?retryWrites=true&w=majority`
 // console.log(URI)
-mongoose.connect(URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(URI, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true});
 
 // Middlewares
 app.use(morgan('dev'))
