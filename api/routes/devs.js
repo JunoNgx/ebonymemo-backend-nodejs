@@ -45,7 +45,7 @@ router.post("/", async (req, res, next) => {
 
     // Making sure that no item of the same id already exists
     if (await Developer.exists({devId: req.body.devId})) {
-        res.status(500).json({
+        res.status(409).json({
             message: "Error: devId already exists"
         })
     } else {
@@ -100,7 +100,10 @@ router.patch("/:devId", checkExists, async (req, res, next) => {
     for (const field in req.body) {
         if (field === "devId") {
             if (await Developer.exists({devId: req.body.devId})) {
-                console.log('New devId already exists. Field not updated.')
+                // console.log('New devId already exists. Field not updated.')
+                res.status(409).json({
+                    message: "New devId already exists."
+                })
             } else {
                 fieldsToUpdate[field] = req.body[field]
             }

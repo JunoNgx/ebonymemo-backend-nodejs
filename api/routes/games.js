@@ -46,7 +46,7 @@ router.get('/:gameId', checkExists, (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     if (await Game.exists({gameId: req.body.gameId})) {
-        res.status(500).json({
+        res.status(409).json({
             message: "Error: gameId already axists"
         })
     } else {
@@ -109,7 +109,10 @@ router.patch("/:gameId", checkExists, async (req, res, next) => {
         if (field === "gameId") {
             if (await (Game.exists({gameId: req.body.gameId}))) {
                 // TODO communicate with client about devId not being unique
-                console.log('New gameId already exists. Field not updated.')
+                // console.log('New gameId already exists. Field not updated.')
+                res.status(409).json({
+                    message: "New gameId already exists."
+                })
             } else {
                 fieldsToUpdate[field] = req.body[field]
             }
