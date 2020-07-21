@@ -8,6 +8,7 @@ require('dotenv').config()
 
 const gameRoutes = require("../api/routes/games")
 const devRoutes = require("../api/routes/devs")
+const adminRoutes = require("../api/routes/admins")
 
 const URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}${process.env.DB_DBHOST}/${process.env.DB_DBNAME}?retryWrites=true&w=majority`
 // console.log(URI)
@@ -23,16 +24,13 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE')
-    // if (req.method === 'OPTIONS') {
-        
-    //     return res.status(200).json({})
-    // }
     next()
 })
 
 // Main request handling routes
 app.use('/.netlify/functions/server/games', gameRoutes)
 app.use('/.netlify/functions/server/devs', devRoutes)
+app.use('/.netlify/functions/server/admins', adminRoutes)
 
 // Handling requests that make past /games and /devs, which are basically errors
 app.use((req, res, next) => {
