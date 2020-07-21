@@ -113,6 +113,7 @@ router.patch("/:gameId", checkExists, async (req, res, next) => {
                 res.status(409).json({
                     message: "New gameId already exists."
                 })
+                return;
             } else {
                 fieldsToUpdate[field] = req.body[field]
             }

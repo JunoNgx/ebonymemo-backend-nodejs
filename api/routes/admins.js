@@ -16,12 +16,14 @@ router.post('/login', (req, res) => {
         .then(result => {
             if (result) {
                 if (req.body.password === result.password) {
-                    const accessToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY, {expiresIn: '30m'})
+                    const accessToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY, {expiresIn: '15m'})
                     const refreshToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY)
 
                     refreshTokens.push(refreshToken)
                     res.status(200).json({
-                        accessToken, refreshToken
+                        message: "Authentication successful",
+                        accessToken,
+                        refreshToken
                     })
                 } else {
                     res.status(401).json({

@@ -48,6 +48,7 @@ router.post("/", async (req, res, next) => {
         res.status(409).json({
             message: "Error: devId already exists"
         })
+        return;
     } else {
         // console.log('confirming not exists')
         const dev = new Developer({
