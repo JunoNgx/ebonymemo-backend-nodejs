@@ -9,7 +9,7 @@ exports.getAll = (req, res) => {
         .exec()
         .then(result => {
             res.status(200).json({
-                message: "GET ALL successful",
+                message: "GET ALL games successful",
                 amount: result.length,
                 result: result
             })
