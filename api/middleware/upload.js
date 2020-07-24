@@ -7,7 +7,8 @@ const storage = new Storage({
         "project_id": process.env.GC_PROJECT_ID,
         "private_key_id": process.env.GC_PRIVATE_KEY_ID,
         // Note: to use single quotes in the env file for this
-        "private_key": JSON.parse(`"${process.env.GC_PRIVATE_KEY}"`),
+        // "private_key": JSON.parse(`"${process.env.GC_PRIVATE_KEY}"`),
+        "private_key": process.env.GC_PRIVATE_KEY.replace(/\\n/g, "\n"),
         "client_email": process.env.GC_CLIENT_EMAIL,
         "client_id": process.env.GC_CLIENT_ID,
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
