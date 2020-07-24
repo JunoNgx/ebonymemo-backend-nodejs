@@ -1,10 +1,11 @@
 const mongoose = require("mongoose")
-
 const Game = require ('../models/game')
+
+const FIELDS_TO_GET = 'gameId name coverUrl releaseYear devId ios android other dateAdded'
 
 exports.getAll = (req, res) => {
     Game.find({})
-        .select('gameId name releaseYear devId ios android other dateAdded')
+        .select(FIELDS_TO_GET)
         .populate('developer')
         .exec()
         .then(result => {
@@ -24,7 +25,7 @@ exports.getAll = (req, res) => {
 
 exports.getOne = (req, res) => {
     Game.findOne({gameId: req.params.gameId})
-        .select('gameId name releaseYear devId ios android other description dateAdded')
+        .select(FIELDS_TO_GET)
         // defined in the Game model's virtual population
         .populate('developer')
         .exec()
@@ -113,6 +114,25 @@ exports.delete = async (req, res) => {
         })
 }
 
+exports.updateCover = (req, res) => {
+    Game.updateOne(
+        {gameId: req.params.gameId},
+        {$set: {coverUrl: req.body.publicCoverUrl}})
+        .exec()
+        .then(result=>{
+            res.status(200).json({
+                message: "Game cover updated successfully",
+                result: result
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "Error",
+                error: err
+            })
+        })
+}
+
 exports.checkExists = async (req, res, next) => {
     if (await Game.exists({gameId: req.params.gameId})) {
         next()
@@ -142,4 +162,3 @@ exports.checkNewId = async (req, res, next) => {
         next()
     }
 }
-

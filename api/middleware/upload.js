@@ -1,9 +1,5 @@
-const path = require('path')
-const express = require('express')
-const router = express.Router()
 require("dotenv").config()
 const Busboy = require('busboy')
-
 const {Storage} = require('@google-cloud/storage')
 const storage = new Storage({
     credentials: {
@@ -20,17 +16,24 @@ const storage = new Storage({
         "client_x509_cert_url": process.env.GC_SERVICE_ACCOUNT_KEY
       }
 })
-
 const bucket = storage.bucket(process.env.GC_BUCKET)
 
-router.post('/', (req, res) => {
+module.exports = (req, res, next) => {
 
-    const busboy = new Busboy({ headers: req.headers });
+    const busboy = new Busboy({
+        headers: req.headers,
+        limits: {
+            files: 1,
+            fileSize: 1024 * 1024 * 1
+        }
+    });
     busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
         console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
-        const fileName = 'rymd.jpg'
-        const image = bucket.file(fileName)
 
+        if (fieldname !== "cover") return
+        const fileName = req.params.gameId + ".jpg"
+
+        const image = bucket.file(fileName)
         file.pipe(image.createWriteStream({
             resumable: false,
             gzip: true,
@@ -38,14 +41,17 @@ router.post('/', (req, res) => {
                 contentType: 'image/jpeg',
             }
         }))
-            .on('error', (err) => {})
+            .on('error', (err) => {
+                res.status(500).json({
+                    message: "Error: upload",
+                    error: err
+                })
+            })
             .on('finish', () => {
-                console.log(`https://storage.googleapis.com/${process.env.GC_BUCKET}/${fileName}`)
-                console.log('Upload completed.')
+                req.body.publicCoverUrl = `https://storage.googleapis.com/${process.env.GC_BUCKET}/${fileName}`
+                console.log('Cover image uploaded to ' + req.body.publicCoverUrl)
+                next()
             })
     });
     req.pipe(busboy);
-})
-
-
-module.exports = router
+}

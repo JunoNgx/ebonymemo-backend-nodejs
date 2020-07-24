@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
-
 const Developer = require ('../models/developer')
+const FIELDS_TO_GET = "devId name origin website twitter peronnel"
 
 exports.getAll = (req, res) => {
     Developer.find({})
-    .select("devId name origin website twitter peronnel")
+    .select(FIELDS_TO_GET)
     .exec()
     .then(result => {
         res.status(200).json({
@@ -25,7 +25,7 @@ exports.getAll = (req, res) => {
 
 exports.getOne = (req, res) => {
     Developer.findOne({devId: req.params.devId})
-        .select('devId name origin personnel twitter website')
+        .select(FIELDS_TO_GET)
         .exec()
         .then(result => {
             if (result) {

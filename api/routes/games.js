@@ -1,34 +1,47 @@
 const express = require("express")
 const router = express.Router()
-const mongoose = require("mongoose")
 
 const GameController = require('../controllers/games')
 const authorize = require('../middleware/auth')
+const uploadCover = require('../middleware/upload')
 
-router.get('/',
+router.get(
+    '/',
     GameController.getAll
 )
 
-router.get('/:gameId',
+router.get(
+    '/:gameId',
     GameController.checkExists,
     GameController.getOne
 )
 
-router.post('/',
-    authorize,
+router.post(
+    '/',
+    // authorize,
     GameController.checkNotExists,
     GameController.create
 )
 
-router.patch("/:gameId",
-    authorize,
+router.post(
+    '/:gameId/cover',
+    // authorize,
+    GameController.checkExists,
+    uploadCover,
+    GameController.updateCover
+)
+
+router.patch(
+    '/:gameId',
+    // authorize,
     GameController.checkExists,
     GameController.checkNewId,
     GameController.update
 )
 
-router.delete('/:gameId',
-    authorize,
+router.delete(
+    '/:gameId',
+    // authorize,
     GameController.checkExists,
     GameController.delete
 )
