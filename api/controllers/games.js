@@ -145,6 +145,7 @@ exports.checkExists = async (req, res, next) => {
         })
     }
 }
+
 exports.checkNotExists = async (req, res, next) => {
     if (await Game.exists({gameId: req.body.gameId})) {
         res.status(409).json({
@@ -156,7 +157,10 @@ exports.checkNotExists = async (req, res, next) => {
 }
 
 exports.checkNewId = async (req, res, next) => {
-    if (!req.body.gameId) next()
+    if (!req.body.gameId) {
+        next()
+        return
+    }
     if (await (Game.exists({gameId: req.body.gameId}))) {
         res.status(409).json({
             message: "New gameId already exists."

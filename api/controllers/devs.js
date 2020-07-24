@@ -134,7 +134,10 @@ exports.checkNotExists = async (req, res, next) => {
 }
 
 exports.checkNewId = async (req, res, next) => {
-    if (!req.body.devId) next()
+    if (!req.body.gameId) {
+        next()
+        return
+    }
     if (await Developer.exists({devId: req.body.devId})) {
         res.status(409).json({
             message: "New devId already exists."
