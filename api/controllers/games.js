@@ -1,12 +1,12 @@
 const mongoose = require("mongoose")
 const Game = require ('../models/game')
 
-const FIELDS_TO_GET = 'gameId name coverUrl releaseYear devId ios android other dateAdded'
+// const FIELDS_TO_GET = 'gameId name coverUrl releaseYear devId ios android other dateAdded'
 
 exports.getAll = (req, res) => {
     Game.find({})
-        .select(FIELDS_TO_GET)
-        .populate('developer')
+        .select('gameId name coverUrl releaseYear devId ios android other dateAdded')
+        .populate('developer', 'name')
         .exec()
         .then(result => {
             res.status(200).json({
@@ -25,7 +25,7 @@ exports.getAll = (req, res) => {
 
 exports.getOne = (req, res) => {
     Game.findOne({gameId: req.params.gameId})
-        .select(FIELDS_TO_GET)
+        .select('gameId name coverUrl releaseYear devId ios android other dateAdded description')
         // defined in the Game model's virtual population
         .populate('developer')
         .exec()
