@@ -125,6 +125,7 @@ exports.updateCover = (req, res) => {
         .then(result=>{
             res.status(200).json({
                 message: "Game cover updated successfully",
+                url: req.body.publicCoverUrl,
                 result: result
             })
         })
