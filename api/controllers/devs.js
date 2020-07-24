@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Developer = require ('../models/developer')
-const FIELDS_TO_GET = "devId name origin website twitter peronnel"
+const FIELDS_TO_GET = "devId name origin website twitter personnel"
 
 exports.getAll = (req, res) => {
     Developer.find({})
