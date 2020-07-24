@@ -10,7 +10,7 @@ exports.getAll = (req, res) => {
         .exec()
         .then(result => {
             res.status(200).json({
-                message: "GET ALL games successful",
+                message: "Game fetch ALL successful",
                 amount: result.length,
                 result: result
             })
@@ -32,7 +32,10 @@ exports.getOne = (req, res) => {
         .then(result => {
             // console.log("Found from DB: ", result)
             if (result) {
-                res.status(200).json(result)
+                res.status(200).json({
+                    message: "Game fetch successful",
+                    result: result
+                })
             }
         })
         .catch(err => {

@@ -8,7 +8,7 @@ exports.getAll = (req, res) => {
     .exec()
     .then(result => {
         res.status(200).json({
-            message: 'Dev read ALL successful',
+            message: 'Dev fetch ALL successful',
             amount: result.length,
             result: result
         })
@@ -30,7 +30,10 @@ exports.getOne = (req, res) => {
         .then(result => {
             if (result) {
                 // console.log("Found from DB: ", data)
-                res.status(200).json(result)
+                res.status(200).json({
+                    message: "Dev fetch successful",
+                    result: result
+                })
             }
         })
         .catch(err => {
