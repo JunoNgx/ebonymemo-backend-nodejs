@@ -14,6 +14,8 @@ exports.login = (req, res) => {
         .then(result => {
             if (result) {
                 console.log('here')
+                // Yes, I'm aware that password is currently in plain text
+                // This site is currently not customer facing
                 if (req.body.password === result.password) {
                     const accessToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY, {expiresIn: '15m'})
                     const refreshToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY)
@@ -21,6 +23,7 @@ exports.login = (req, res) => {
                     refreshTokens.push(refreshToken)
                     res.status(200).json({
                         message: "Authentication successful",
+                        adminId: result.username,
                         accessToken,
                         refreshToken
                     })
