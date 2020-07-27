@@ -8,6 +8,8 @@ const Admin = require('../models/admin.js')
 var refreshTokens = []
 
 exports.login = (req, res) => {
+    console.log(req.body);
+
     Admin.findOne({username: req.body.username})
         .select('username password')
         .exec()
@@ -51,7 +53,7 @@ exports.login = (req, res) => {
     }
 
 exports.refresh = (req, res) => {
-    const refreshToken = req.body.token
+    const refreshToken = req.body.refreshToken
     if (refreshToken == null) {
         res.status(401).json({
             message: "Token not received"
@@ -67,7 +69,7 @@ exports.refresh = (req, res) => {
 
     try {
         user = jwt.verify(refreshToken, process.env.JWT_SECRETKEY)
-        const accessToken = jwt.sign(user, process.env.JWT_SECRETKEY, {expiresIn: '30m'})
+        const accessToken = jwt.sign(user, process.env.JWT_SECRETKEY, {expiresIn: '1h'})
         res.status(200).json({accessToken})
     } catch(err) {
         res.status(403).json({
@@ -77,7 +79,7 @@ exports.refresh = (req, res) => {
 }
 
 exports.logout = (req, res) => {
-    if (!req.body.token) {
+    if (!req.body.refreshToken) {
         res.status(400).json({
             message: "No token received."
         })
