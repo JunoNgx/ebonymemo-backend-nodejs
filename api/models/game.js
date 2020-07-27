@@ -10,6 +10,7 @@ const gameSchema = mongoose.Schema({
         android: {type: String, required: false},
         other: {type: Boolean, required: false},
         description: {type: String, required: false},
+        featured: {type: Boolean, required: false},
         dateAdded: {type: Date}
     }, {
         versionKey: false,

@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         : null
     
     if (token == null) return res.status(401).json({
-        message: "No token found"
+        message: "No authorization token found"
     })
 
     try {
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
         next()
     } catch(err) {
         res.status(403).json({
-            message: "Token is invalid"
+            message: "Authorization token is invalid"
         })
     }
 }

@@ -18,14 +18,14 @@ router.get(
 
 router.post(
     '/',
-    // authorize,
+    authorize,
     GameController.checkNotExists,
     GameController.create
 )
 
 router.post(
     '/:gameId/cover',
-    // authorize,
+    authorize,
     GameController.checkExists,
     uploadCover,
     GameController.updateCover
@@ -33,7 +33,7 @@ router.post(
 
 router.patch(
     '/:gameId',
-    // authorize,
+    authorize,
     GameController.checkExists,
     GameController.checkNewId,
     GameController.update
@@ -41,7 +41,7 @@ router.patch(
 
 router.delete(
     '/:gameId',
-    // authorize,
+    authorize,
     GameController.checkExists,
     GameController.delete
 )

@@ -51,7 +51,7 @@ exports.create = async (req, res) => {
         origin: req.body.origin,
         personnel: req.body.personnel,
         twitter: req.body.twitter,
-        websote: req.body.website
+        website: req.body.website,
     })
     dev.save()
         .then(result => {

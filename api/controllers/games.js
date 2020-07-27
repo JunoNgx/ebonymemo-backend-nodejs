@@ -5,7 +5,7 @@ const Game = require ('../models/game')
 
 exports.getAll = (req, res) => {
     Game.find({})
-        .select('gameId name coverUrl releaseYear devId ios android other dateAdded')
+        .select('gameId name coverUrl releaseYear devId ios android other dateAdded featured')
         .populate('developer', 'name')
         .exec()
         .then(result => {
@@ -25,7 +25,7 @@ exports.getAll = (req, res) => {
 
 exports.getOne = (req, res) => {
     Game.findOne({gameId: req.params.gameId})
-        .select('gameId name coverUrl releaseYear devId ios android other dateAdded description')
+        .select('gameId name coverUrl releaseYear devId ios android other dateAdded description featured')
         // defined in the Game model's virtual population
         .populate('developer')
         .exec()
@@ -55,6 +55,7 @@ exports.create = async (req, res) => {
         ios: req.body.ios,
         other: req.body.other,
         description: req.body.description,
+        featured: req.body.featured,
         dateAdded: Date.now()
     })
     game.save()

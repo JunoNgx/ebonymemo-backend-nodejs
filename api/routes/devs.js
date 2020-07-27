@@ -18,14 +18,14 @@ router.get(
 
 router.post(
     '/',
-    // authorize,
+    authorize,
     DevController.checkNotExists,
     DevController.create
 )
 
 router.patch(
     '/:devId',
-    // authorize,
+    authorize,
     DevController.checkExists,
     DevController.checkNewId,
     DevController.update
@@ -33,7 +33,7 @@ router.patch(
 
 router.delete(
     '/:devId',
-    // authorize,
+    authorize,
     DevController.checkExists,
     DevController.delete
 )
