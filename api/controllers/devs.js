@@ -29,7 +29,6 @@ exports.getOne = (req, res) => {
         .exec()
         .then(result => {
             if (result) {
-                // console.log("Found from DB: ", data)
                 res.status(200).json({
                     message: "Dev fetch successful",
                     result: result

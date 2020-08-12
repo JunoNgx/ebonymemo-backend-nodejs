@@ -19,7 +19,7 @@ exports.login = (req, res) => {
                 // Yes, I'm aware that password is currently in plain text
                 // This site is currently not customer facing
                 if (req.body.password === result.password) {
-                    const accessToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY, {expiresIn: '15m'})
+                    const accessToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY, {expiresIn: '1h'})
                     const refreshToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY)
 
                     refreshTokens.push(refreshToken)
@@ -35,10 +35,8 @@ exports.login = (req, res) => {
                     })
                 }
             } else {
-                // TODO: To change to 401 in production to avoid providing cues
-                // for hacking attempts
                 res.status(404).json({
-                    message: "Username not found"
+                    message: "Authorization failed"
                 })
             }
         })
