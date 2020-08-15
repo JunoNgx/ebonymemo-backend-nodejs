@@ -7,26 +7,26 @@ const uploadCover = require('../middleware/upload')
 
 router.get(
     '/',
-    GameController.getAll
+    GameController.getWithQuery
 )
 
 router.get(
     '/:gameId',
-    GameController.checkExists,
+    GameController.validateExists,
     GameController.getOne
 )
 
 router.post(
     '/',
     authorize,
-    GameController.checkNotExists,
+    GameController.validateNotExists,
     GameController.create
 )
 
 router.post(
     '/:gameId/cover',
     authorize,
-    GameController.checkExists,
+    GameController.validateExists,
     uploadCover,
     GameController.updateCover
 )
@@ -34,15 +34,15 @@ router.post(
 router.patch(
     '/:gameId',
     authorize,
-    GameController.checkExists,
-    GameController.checkNewId,
+    GameController.validateExists,
+    GameController.validateNewId,
     GameController.update
 )
 
 router.delete(
     '/:gameId',
     authorize,
-    GameController.checkExists,
+    GameController.validateExists,
     GameController.delete
 )
 

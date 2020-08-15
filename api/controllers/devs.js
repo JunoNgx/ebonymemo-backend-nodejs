@@ -112,7 +112,7 @@ exports.delete = async (req, res) => {
         })
 }
 
-exports.checkExists = async (req, res, next) => {
+exports.validateExists = async (req, res, next) => {
     if (await Developer.exists({devId: req.params.devId})) {
         next()
     } else {
@@ -122,7 +122,7 @@ exports.checkExists = async (req, res, next) => {
     }
 }
 
-exports.checkNotExists = async (req, res, next) => {
+exports.validateNotExists = async (req, res, next) => {
     if (await Developer.exists({devId: req.body.devId})) {
         res.status(409).json({
             message: "Error: devId already exists"
@@ -132,7 +132,7 @@ exports.checkNotExists = async (req, res, next) => {
     }
 }
 
-exports.checkNewId = async (req, res, next) => {
+exports.validateNewId = async (req, res, next) => {
     if (!req.body.gameId) {
         next()
         return

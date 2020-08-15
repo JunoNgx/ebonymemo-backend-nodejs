@@ -1,21 +1,61 @@
 const mongoose = require("mongoose")
 const Game = require ('../models/game')
 
-// const FIELDS_TO_GET = 'gameId name coverUrl releaseYear devId ios android other dateAdded'
+exports.getWithQuery = async (req, res) => {
 
-exports.getAll = (req, res) => {
-    Game.find({})
+    let q = {}
+    // QUERY PARAMETER: searchName, to string to search from game.name with regex processing
+    // ^ to match at start of the line
+    // | to create a boolean OR
+    // \s to match at start of every word (i.e. after a whitespace)
+    // 3. Flag: case insensitive
+    q.searchOption = (req.query.searchName)
+        ? {name: { $regex: new RegExp("^" + req.query.searchName + "|\\s" + req.query.searchName, "i") }}
+        : {}
+
+    // QUERY PARAMETER: limit, the amount of results to return
+    q.limit = parseInt(req.query.limit) || 0
+    // QUERY PARAMETER: page, the page of the paginated response
+    q.page = parseInt(req.query.page) || 1
+    // The start index of the result iaccording to page number
+    q.startIndex = q.limit * (q.page - 1)
+
+    // QUERY PARAMETER: sortBy, the property to sort by
+    const sortProp = req.query.sortBy || ''
+    // QUERY PARAMETER: sortOrder, anything not 'desc' is 'asc'
+    const sortOrder = (req.query.sortOrder === 'desc')
+        ? 'desc' : 'asc'
+    // Create object for sortOption from strings
+    // If sortProp is parsed, then make sortOption blank
+    q.sortOption = (sortProp)
+        ? JSON.parse('{"' + sortProp + '":"' + sortOrder + '"}')
+        : {}
+    // console.log(q.sortOption)
+
+
+    q.last_page = (q.limit===0)
+        ? 1
+        : Math.ceil((await Game.countDocuments(q.searchOption))/q.limit)
+    
+    console.log(await Game.countDocuments(q.searchOption) )
+
+    Game.find(q.searchOption)
         .select('gameId name coverUrl releaseYear devId ios android other dateAdded featured')
         .populate('developer', 'name')
+        .skip(q.startIndex)
+        .limit(q.limit)
+        .sort(q.sortOption)
         .exec()
         .then(result => {
             res.status(200).json({
-                message: "Game fetch ALL successful",
-                amount: result.length,
+                message: "Games fetch successful",
+                limit: q.limit,
+                page: q.page,
+                last_page: q.last_page,
                 result: result
             })
         })
-        .catch(err => {
+        .catch(err => { 
             res.status(500).json({
                 message: "Error",
                 error: err
@@ -33,7 +73,7 @@ exports.getOne = (req, res) => {
             // console.log("Found from DB: ", result)
             if (result) {
                 res.status(200).json({
-                    message: "Game fetch successful",
+                    message: "Single game fetch successful",
                     result: result
                 })
             }
@@ -138,7 +178,7 @@ exports.updateCover = (req, res) => {
         })
 }
 
-exports.checkExists = async (req, res, next) => {
+exports.validateExists = async (req, res, next) => {
     if (await Game.exists({gameId: req.params.gameId})) {
         next()
     } else {
@@ -148,7 +188,7 @@ exports.checkExists = async (req, res, next) => {
     }
 }
 
-exports.checkNotExists = async (req, res, next) => {
+exports.validateNotExists = async (req, res, next) => {
     if (await Game.exists({gameId: req.body.gameId})) {
         res.status(409).json({
             message: "Error: gameId already axists"
@@ -158,7 +198,7 @@ exports.checkNotExists = async (req, res, next) => {
     }
 }
 
-exports.checkNewId = async (req, res, next) => {
+exports.validateNewId = async (req, res, next) => {
     if (!req.body.gameId) {
         next()
         return

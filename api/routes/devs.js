@@ -12,29 +12,29 @@ router.get(
 
 router.get(
     '/:devId',
-    DevController.checkExists,
+    DevController.validateExists,
     DevController.getOne
 )
 
 router.post(
     '/',
     authorize,
-    DevController.checkNotExists,
+    DevController.validateNotExists,
     DevController.create
 )
 
 router.patch(
     '/:devId',
     authorize,
-    DevController.checkExists,
-    DevController.checkNewId,
+    DevController.validateExists,
+    DevController.validateNewId,
     DevController.update
 )
 
 router.delete(
     '/:devId',
     authorize,
-    DevController.checkExists,
+    DevController.validateExists,
     DevController.delete
 )
 
