@@ -44,6 +44,7 @@ exports.getWithQuery = async (req, res) => {
         .populate('developer', 'name')
         .skip(q.startIndex)
         .limit(q.limit)
+        .collation({'locale': 'en'})
         .sort(q.sortOption)
         .exec()
         .then(result => {
