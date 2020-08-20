@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const serverless = require('serverless-http')
+// const serverless = require('serverless-http')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
@@ -48,4 +48,4 @@ app.use((error, req, res, next) => {
 })
 
 module.exports = app
-module.exports.handler = serverless(app)
+// module.exports.handler = serverless(app)

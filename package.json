@@ -4,7 +4,6 @@
     "description": "Backend for a smartphone game currator website",
     "main": "functions/server.js",
     "scripts": {
-        "build": "netlify-lambda build express",
         "start": "nodemon server-local",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -29,8 +28,6 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.9.20",
         "morgan": "^1.10.0",
-        "netlify-lambda": "^1.6.3",
-        "nodemon": "^2.0.4",
-        "serverless-http": "^2.5.0"
+        "nodemon": "^2.0.4"
     }
 }
