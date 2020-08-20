@@ -1,7 +1,10 @@
 {
     "builds": [{
-        "src": "server-local.js",
-        "use": "@vercel/node"
+        "src": "index.js",
+        "use": "@now/node-server",
+        "env": {
+            "NODEJS_HELPERS": "0"
+        }
     }],
     
     "routes": [{
@@ -11,6 +14,6 @@
             "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
         },
         "src": "/.*",
-        "dest": "/server-local.js"
+        "dest": "/index.js"
     }]
 }
