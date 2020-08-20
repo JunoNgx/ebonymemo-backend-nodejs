@@ -1,10 +1,7 @@
 {
     "builds": [{
         "src": "index.js",
-        "use": "@now/node-server",
-        "env": {
-            "NODEJS_HELPERS": "0"
-        }
+        "use": "@now/node-server"
     }],
     
     "routes": [{
