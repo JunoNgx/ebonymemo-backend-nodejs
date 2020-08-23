@@ -1,4 +1,3 @@
-const mongoose = require("mongoose")
 const Game = require ('../models/game')
 
 exports.getWithQuery = async (req, res) => {
@@ -66,7 +65,7 @@ exports.getWithQuery = async (req, res) => {
 
 exports.getOne = (req, res) => {
     Game.findOne({gameId: req.params.gameId})
-        .select('gameId name coverUrl releaseYear devId ios android other dateAdded description featured')
+        .select('gameId name coverUrl releaseYear devId ios android other dateAdded featured description')
         // defined in the Game model's virtual population
         .populate('developer')
         .exec()
@@ -146,6 +145,7 @@ exports.delete = async (req, res) => {
     Game.deleteOne({gameId: req.params.gameId})
         .exec()
         .then(result => {
+            console.log('Game deleted: ' + req.params.gameId)
             res.status(200).json({
                 message: "Game deleted successfully",
                 result: result

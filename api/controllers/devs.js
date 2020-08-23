@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const Developer = require ('../models/developer')
 const FIELDS_TO_GET = "devId name origin website twitter personnel"
 
@@ -99,6 +98,7 @@ exports.delete = async (req, res) => {
     Developer.deleteOne({devId: req.params.devId})
         .exec()
         .then(result => {
+            console.log('Dev deleted: ' + req.params.devId)
             res.status(200).json({
                 message: "Dev deleted successfully",
                 result: result
