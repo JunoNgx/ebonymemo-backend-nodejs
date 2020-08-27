@@ -43,7 +43,7 @@ exports.getOne = (req, res) => {
 exports.create = async (req, res) => {
 
     const dev = new Developer({
-        _id: mongoose.Types.ObjectId(),
+        // _id: mongoose.Types.ObjectId(),
         devId: req.body.devId,
         name: req.body.name,
         origin: req.body.origin,
