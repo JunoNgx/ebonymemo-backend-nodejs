@@ -2,6 +2,17 @@ const Game = require ('../models/game')
 
 exports.getWithQuery = async (req, res) => {
 
+    function sortRandom(arr) {
+        for (i = 0; i < arr.length; i++) {
+            let temp = arr[i];
+            let randomIndex = Math.floor(Math.random() * arr.length)
+            arr[i] = arr[randomIndex]
+            arr[randomIndex] = temp
+        }
+
+        return arr
+    }
+
     let q = {}
     // QUERY PARAMETER: searchName, to string to search from game.name with regex processing
     // ^ to match at start of the line
@@ -20,14 +31,14 @@ exports.getWithQuery = async (req, res) => {
     q.startIndex = q.limit * (q.page - 1)
 
     // QUERY PARAMETER: sortBy, the property to sort by
-    const sortProp = req.query.sortBy || ''
+    const sortBy = req.query.sortBy || ''
     // QUERY PARAMETER: sortOrder, anything not 'desc' is 'asc'
     const sortOrder = (req.query.sortOrder === 'desc')
         ? 'desc' : 'asc'
     // Create object for sortOption from strings
     // If sortProp is parsed, then make sortOption blank
-    q.sortOption = (sortProp)
-        ? JSON.parse('{"' + sortProp + '":"' + sortOrder + '"}')
+    q.sortOption = (sortBy)
+        ? JSON.parse('{"' + sortBy + '":"' + sortOrder + '"}')
         : {}
     // console.log(q.sortOption)
 
@@ -47,6 +58,7 @@ exports.getWithQuery = async (req, res) => {
         .sort(q.sortOption)
         .exec()
         .then(result => {
+            if (sortBy === "random") result = sortRandom(result)
             res.status(200).json({
                 message: "Games fetch successful",
                 limit: q.limit,
