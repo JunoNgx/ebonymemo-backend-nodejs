@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 })
 
 // Main request handling routes
+// All paths must route to lambda due to Netlify functions limitation
 app.use('/.netlify/functions/server/games', gameRoutes)
 app.use('/.netlify/functions/server/devs', devRoutes)
 app.use('/.netlify/functions/server/admins', adminRoutes)
