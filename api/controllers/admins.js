@@ -68,7 +68,7 @@ exports.login = (req, res) => {
 
                 // Username not found
                 // Response messages are ambiguous to dissuade bruteforce attempts
-                res.status(404).json({
+                res.status(401).json({
                     message: "Authorization failed"
                 })
             }
