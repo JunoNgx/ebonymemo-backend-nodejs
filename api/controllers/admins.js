@@ -25,9 +25,8 @@ exports.login = (req, res) => {
         .then(result => {
             if (result) {
                 // Yes, I'm aware that password is currently in plain text
-                // As of time of writing, Juno is the only admin
-                // This is also to dissuade other admins from using their shared personal passwords
-                // which might compromise the site
+                // As of time of writing, Juno is the only admin.
+                // TODO: salt hash passwords and build proper UI for password reset
                 if (req.body.password === result.password) {
                     const accessToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY, {expiresIn: '1h'})
                     const refreshToken = jwt.sign({user: result.username}, process.env.JWT_SECRETKEY)
