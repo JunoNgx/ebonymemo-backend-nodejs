@@ -123,9 +123,13 @@ Gets a number of `Game` documents according to query parameters. Supports sortin
 ##### Query parameters
 
 `searchName` (default: `''`): The query query to search by `Game.name`. This is case insensitive and will match every word.
+
 `limit` (default: `0` ): The amount of document to be returned. A `0` value will have no limit.
+
 `page` (default: `1`): The page index of the paginated response. Index starts from `1`.
+
 `sortBy` (default: `dateAdded`): The document field to sort the response with. `dateAdded` is automatically added upon using the `POST` `/games` endpoint. `random` is a special possible value, which will shuffle the `result` array priorly to responding.
+
 `sortOrder` (default: `asc`): To use `asc` or `desc`. Anything that is not `desc` will be reverted to `asc`.
 
 Empty fields are automatically reverted to default values. A `GET` request without any query parameter will result in retrieving all `Game` documents sorted by ascending `dateAdded`.
@@ -146,13 +150,21 @@ Code `200`: successful fetch.
 Creates a new `Game` document. Requires `Authorization`.
 ##### Body
 `gameId` (String, required): The unique identifier for the game. Lowercase only. Generally not displayed to user. Only alphanumerics are recommended.
+
 `name` (String, required): The formally capitalised and stylised name of the game.
-`releaseYear` (Number, required): The year the game was released. Number of four digits only. Accepts only within the range of 2000-2100..
+
+`releaseYear` (Number, required): The year the game was released. Number of four digits only. Accepts only within the range of 2000-2100.
+
 `devId` (String, required): The `devId` identifier of the developer of the game. It is recommended that the developer document is created prior to the creation of the `Game` document. Alternatively, you may use a placeholder, but do remember to update this afterwards.
+
 `ios` (String): The URL to the iOS App Store release of the game, if available. Enter `delisted` (case sensitive) for delisted releases.
+
 `android` (String): The URL to the Google Play Store release of the game, if available. Enter `delisted` (case sensitive) for delisted release.
+
 `other` (Boolean): Whether an alternative release exists for the game (e.g. Humble Store, itch.io, web). Should this field be "yes", more information should be provided in the game's description.
+
 `featured` (Boolean): Whether the game is being featured as an "Editor's Choice" title for the site. Featured games are randomly showcased on the landing page, indicated in the browse page, and can also be sorted for priority display.
+
 `description` (String): A moderate-length description of the game by the editor in **mardown syntax**.
 
 ##### Responses
@@ -165,6 +177,7 @@ Code `201`: successful create.
 Updates an existing `Game` document, which has the corresponding `gameId`. Requires `Authorization`.
 ##### Body
 `gameId` (String): the new `gameId`. If the new `gameId` is the same as the old one, or already existed, code `409` will be returned. To omit if there is no attempt to modify `gameId`.
+
 The remaining fields are optionally new data to be updated with, to refer to `POST` `/games` for data in the schema.
 ##### Responses
 Code `404`: current `gameId` doesn't exist.
@@ -201,10 +214,15 @@ Code `200`: successful fetch.
 Creates a new `Developer` document. Requires `Authorization`.
 ##### Body
 `devId` (String, required): The unique identifier for the developers without space or capitalisation. When in doubt, using Twitter handle is usually a safe and good choice.
+
 `name` (String, required): The full and formal capitalised name of the developer.
+
 `origin` (String, required): The base country of developer in **ISO code** (e.g. US, SE, SG). Two characters only.
+
 `twitter` (String): The Twitter handle of the developer, without full url and without the @ sign (e.g. `grapefrukt` for Grapefrukt Games).
+
 `website` (String): The full website url of the developer.
+
 `personnel` (Array of Strings): A list of notable and/or key members of the group (when applicable). Highly optional. Don't fret it.
 
 ##### Responses
@@ -216,7 +234,9 @@ Code `201`: successful create.
 `PATCH` `/devs/:devId`
 Updates an existing `Developer` document, which has the corresponding `devId`. Requires `Authorization`.
 ##### Body
+
 `devId` (String): the new `devId`. If the new `devId` is the same as the old one, or already existed, code `409` will be returned. To omit if there is no attempt to modify `devId`.
+
 The remaining fields are optionally new data to be updated with, to refer to `POST` `/devs` for data in the `Developer` Schema.
 ##### Responses
 Code `404`: current `devId` doesn't exist.
