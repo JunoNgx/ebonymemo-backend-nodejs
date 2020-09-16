@@ -55,7 +55,7 @@ exports.getWithQuery = async (req, res) => {
 
     q.last_page = (q.limit===0)
         ? 1
-        : Math.ceil((await Game.countDocuments(q.searchOption))/q.limit)
+        : Math.ceil((await Game.countDocuments(q.searchOptions))/q.limit)
 
     Game.find(q.searchOptions)
         .select(FIELDS)
