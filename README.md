@@ -112,7 +112,9 @@ Code `200`: deletion successful, token is removed from memory.
 Gets a number of `Game` documents according to query parameters. Supports sorting and pagination.
 ##### Query parameters
 
-`searchName` (default: `''`): The query query to search by `Game.name`. This is case insensitive and will match every word.
+`searchName` (default: `''`): The query to search by `Game.name`. This is case insensitive and will match every word.
+
+`searchTag` (default: `''`): The query to search by `Game.tags`. This is case sensitive.
 
 `limit` (default: `0` ): The amount of document to be returned. A `0` value will have no limit.
 
@@ -147,6 +149,8 @@ Creates a new `Game` document. Requires `Authorization`.
 `releaseYear` (Number, required): The year the game was released. Number of four digits only. Accepts only within the range of 2000-2100.
 
 `devId` (String, required): The `devId` identifier of the developer of the game. It is recommended that the developer document is created prior to the creation of the `Game` document. Alternatively, you may use a placeholder, but do remember to update this afterwards.
+
+`tags` (Array of Objects): The tags to provide summarised information about the game. Each tag item in the array contains the tag value for the field `name`. E.g. `{tags: [{name: "platformer}, {name: "stylish"}]}`.
 
 `ios` (String): The URL to the iOS App Store release of the game, if available. Enter `delisted` (case sensitive) for delisted releases.
 
