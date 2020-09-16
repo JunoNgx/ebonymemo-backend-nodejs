@@ -1,8 +1,10 @@
 const Game = require ('../models/game')
 
+const FIELDS = 'gameId name coverUrl releaseYear devId tags ios android other dateAdded featured'
+
 exports.getWithQuery = async (req, res) => {
 
-    function sortRandom(arr) {
+    function shuffle(arr) {
         for (i = 0; i < arr.length; i++) {
             let temp = arr[i];
             let randomIndex = Math.floor(Math.random() * arr.length)
@@ -14,14 +16,22 @@ exports.getWithQuery = async (req, res) => {
     }
 
     let q = {}
-    // QUERY PARAMETER: searchName, to string to search from game.name with regex processing
+    q.searchOptions = {}
+
+    // QUERY PARAMETER: searchName, the string to search from game.name with regex processing
     // ^ to match at start of the line
     // | to create a boolean OR
     // \s to match at start of every word (i.e. after a whitespace)
     // 3. Flag: case insensitive
-    q.searchOption = (req.query.searchName)
-        ? {name: { $regex: new RegExp("^" + req.query.searchName + "|\\s" + req.query.searchName, "i") }}
-        : {}
+    if (req.query.searchName) {
+        q.searchOptions.name = { $regex: new RegExp("^" + req.query.searchName + "|\\s" + req.query.searchName, "i") }
+    }
+
+    // QUERY PARAMETER: searchTag, string to search game from game.tags
+    if (req.query.searchTag) {
+        q.searchOptions.tags = {}
+        q.searchOptions.tags.name = req.query.searchTag
+    }
 
     // QUERY PARAMETER: limit, the amount of results to return
     q.limit = parseInt(req.query.limit) || 0
@@ -46,11 +56,9 @@ exports.getWithQuery = async (req, res) => {
     q.last_page = (q.limit===0)
         ? 1
         : Math.ceil((await Game.countDocuments(q.searchOption))/q.limit)
-    
-    console.log(await Game.countDocuments(q.searchOption) )
 
-    Game.find(q.searchOption)
-        .select('gameId name coverUrl releaseYear devId ios android other dateAdded featured')
+    Game.find(q.searchOptions)
+        .select(FIELDS)
         .populate('developer', 'name')
         .skip(q.startIndex)
         .limit(q.limit)
@@ -58,7 +66,7 @@ exports.getWithQuery = async (req, res) => {
         .sort(q.sortOption)
         .exec()
         .then(result => {
-            if (sortBy === "random") result = sortRandom(result)
+            if (sortBy === "random") result = shuffle(result)
             res.status(200).json({
                 message: "Games fetch successful",
                 limit: q.limit,
@@ -77,7 +85,7 @@ exports.getWithQuery = async (req, res) => {
 
 exports.getOne = (req, res) => {
     Game.findOne({gameId: req.params.gameId})
-        .select('gameId name coverUrl releaseYear devId ios android other dateAdded featured description')
+        .select(FIELDS + ' description')
         // defined in the Game model's virtual population
         .populate('developer')
         .exec()
@@ -103,6 +111,7 @@ exports.create = async (req, res) => {
         name: req.body.name,
         releaseYear: req.body.releaseYear,
         devId: req.body.devId,
+        tags: req.body.tags,
         android: req.body.android,
         ios: req.body.ios,
         other: req.body.other,

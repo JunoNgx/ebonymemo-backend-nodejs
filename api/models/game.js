@@ -6,6 +6,7 @@ const gameSchema = mongoose.Schema({
         coverUrl: {type: String, required: false},
         releaseYear: {type: Number, required: true},
         devId: {type: String, required: true},
+        tags: {type: Array, required: false},
         ios: {type: String, required: false},
         android: {type: String, required: false},
         other: {type: Boolean, required: false},
