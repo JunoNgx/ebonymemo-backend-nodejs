@@ -18,7 +18,7 @@ router.get(
 
 router.post(
     '/',
-    // authorize,
+    authorize,
     GameController.validateNotExists,
     GameController.create
 )
@@ -33,7 +33,7 @@ router.post(
 
 router.patch(
     '/:gameId',
-    // authorize,
+    authorize,
     GameController.validateExists,
     GameController.validateNewId,
     GameController.update
